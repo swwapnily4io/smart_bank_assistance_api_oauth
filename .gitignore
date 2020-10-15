@@ -6,3 +6,9 @@ src/main/java/.DS_Store
 src/main/java/com/.DS_Store
 src/main/java/com/example/.DS_Store
 src/main/java/com/example/OauthExample/.DS_Store
+/target/
+.project
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.m2e.core.prefs
+.classpath
