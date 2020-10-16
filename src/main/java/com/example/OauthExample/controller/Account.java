@@ -7,16 +7,18 @@ public class Account {
   private String userName;
   private long accountNo;
   private double balance;
-  private Date createdOn;
+  private String createdOn;
   private String accountType;
+  private String currencySymbol;
   
-  public Account(String userName, long accountNo, double balance, Date createdOn, String accountType) {
+  public Account(String userName, long accountNo, double balance, String createdOn, String accountType,String currencySymbol) {
     super();
     this.userName = userName;
     this.accountNo = accountNo;
     this.balance = balance;
     this.createdOn = createdOn;
     this.accountType = accountType;
+    this.currencySymbol = currencySymbol;
   }
 
   public String getAccountType() {
@@ -51,12 +53,20 @@ public class Account {
     this.balance = balance;
   }
 
-  public Date getCreatedOn() {
+  public String getCreatedOn() {
     return createdOn;
   }
 
-  public void setCreatedOn(Date createdOn) {
+  public void setCreatedOn(String createdOn) {
     this.createdOn = createdOn;
+  }
+
+  public String getCurrencySymbol() {
+    return currencySymbol;
+  }
+
+  public void setCurrencySymbol(String currencySymbol) {
+    this.currencySymbol = currencySymbol;
   }
   
   

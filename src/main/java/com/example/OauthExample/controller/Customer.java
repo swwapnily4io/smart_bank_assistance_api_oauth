@@ -42,8 +42,9 @@ public class Customer {
   public Map<String, Object> getAccounts(@RequestParam @NonNull String userName,OAuth2Authentication authentication) {
     Map<String, Object> response = new HashMap<String, Object>();
     List<Account> accounts = new ArrayList<Account>();
-    Account ac1 = new Account("Steve Smith", 382799319, 1920.10, new Date("12-Jan-2004"), "Savings Account");
-    Account ac2 = new Account("Steve Smith", 382799319, 10.10, new Date("12/12/2007"), "Current Account");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Account ac1 = new Account("Steve Smith", 382799319, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account","$");
+    Account ac2 = new Account("Steve Smith", 382799319, 10.10, sdf.format(new Date("12/12/2007")), "Current Account","$");
     accounts.add(ac1);
     accounts.add(ac2);
     System.out.println("Printing userName " + userName);
@@ -64,7 +65,7 @@ public class Customer {
     Map<String, Object> response = new HashMap<String, Object>();
     List<TransactionHistory> history = new ArrayList<TransactionHistory>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Account acc = new Account("Steve Smith", 382799319, 1920.10, new Date("12-Jan-2004"), "Savings Account");
+    Account acc = new Account("Steve Smith", 382799319, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account","$");
     
     System.out.println("Printing accountNo " + accountNo);
     TransactionHistory history1 = new TransactionHistory(sdf.format(new Date("12-Jan-2004")), 231332133, "Debit",
