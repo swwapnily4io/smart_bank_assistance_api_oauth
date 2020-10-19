@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class Customer {
 
   @GetMapping("/login")
-  public Map<String, Object> login(@RequestParam @NonNull String userName, @RequestParam @NonNull String password) {
+  @PreAuthorize("!hasAuthority('USER')")
+  public Map<String, Object> login(@RequestParam @NonNull String userName, @RequestParam @NonNull String password,
+          OAuth2Authentication authentication) {
     Map<String, Object> response = new HashMap<String, Object>();
     System.out.println("Printing params " + userName + "password " + userName);
     if (null != userName && !StringUtils.isEmpty(userName) && userName.equalsIgnoreCase("steve")
@@ -39,12 +41,14 @@ public class Customer {
 
   @GetMapping("/getAccounts")
   @PreAuthorize("!hasAuthority('USER')")
-  public Map<String, Object> getAccounts(@RequestParam @NonNull String userName,OAuth2Authentication authentication) {
+  public Map<String, Object> getAccounts(@RequestParam @NonNull String userName, OAuth2Authentication authentication) {
     Map<String, Object> response = new HashMap<String, Object>();
     List<Account> accounts = new ArrayList<Account>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Account ac1 = new Account("Steve Smith", 382799319, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account","$");
-    Account ac2 = new Account("Steve Smith", 382799319, 10.10, sdf.format(new Date("12/12/2007")), "Current Account","$");
+    Account ac1 = new Account("Steve Smith", 123456, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account",
+            "$");
+    Account ac2 = new Account("Steve Smith", 654321, 10.10, sdf.format(new Date("12/12/2007")), "Current Account",
+            "$");
     accounts.add(ac1);
     accounts.add(ac2);
     System.out.println("Printing userName " + userName);
@@ -61,18 +65,22 @@ public class Customer {
 
   @GetMapping("/getTransactionHistory")
   @PreAuthorize("!hasAuthority('USER')")
-  public Map<String, Object> getTransactionHistory(@RequestParam @NonNull long accountNo,OAuth2Authentication authentication) {
+  public Map<String, Object> getTransactionHistory(@RequestParam @NonNull long accountNo,
+          OAuth2Authentication authentication) {
     Map<String, Object> response = new HashMap<String, Object>();
     List<TransactionHistory> history = new ArrayList<TransactionHistory>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Account acc = new Account("Steve Smith", 382799319, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account","$");
-    
+    Account acc = new Account("Steve Smith", 123456, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account",
+            "$");
+
     System.out.println("Printing accountNo " + accountNo);
     TransactionHistory history1 = new TransactionHistory(sdf.format(new Date("12-Jan-2004")), 231332133, "Debit",
             "ACH-D Bill Payment HDFC", 100);
-    TransactionHistory history2 = new TransactionHistory(sdf.format(new Date("18-Jan-2004")), 231300039, "Debit", "Amazon Purchase",
+    TransactionHistory history2 = new TransactionHistory(sdf.format(new Date("18-Jan-2004")), 231300039, "Debit",
+            "Amazon Purchase",
             1103);
-    TransactionHistory history3 = new TransactionHistory(sdf.format(new Date("21-Jan-2004")), 241432143, "Credit", "ACH-D Interest",
+    TransactionHistory history3 = new TransactionHistory(sdf.format(new Date("21-Jan-2004")), 241432143, "Credit",
+            "ACH-D Interest",
             59.0);
     history.add(history1);
     history.add(history2);
@@ -88,6 +96,7 @@ public class Customer {
       response.put("status", HttpStatus.OK);
       response.put("statusMsg", "Success");
       response.put("historyList", history);
+      response.put("account", acc);
       return response;
     }
     response.put("status", HttpStatus.NOT_FOUND);
