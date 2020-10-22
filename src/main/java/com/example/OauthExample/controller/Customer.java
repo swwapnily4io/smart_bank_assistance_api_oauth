@@ -103,4 +103,37 @@ public class Customer {
     response.put("statusMsg", "Failed to get Transaction Details for account - " + accountNo);
     return response;
   }
+
+  @GetMapping("/getServiceRequestList")
+  @PreAuthorize("!hasAuthority('USER')")
+  public Map<String, Object> getServiceRequestList(@RequestParam @NonNull long accountNo,
+          OAuth2Authentication authentication) {
+    Map<String, Object> response = new HashMap<String, Object>();
+    List<ServiceRequest> serviceRequest = new ArrayList<ServiceRequest>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    ServiceRequest req1 = new ServiceRequest(1001l, "Chequeue Book Request (20 Leaves)",
+            sdf.format(new Date("12-Jan-2004")), "Dispatched", "Dispatched, expect delivery in 5 working days");
+    ServiceRequest req2 = new ServiceRequest(1002l, "Detailed Account Statement", sdf.format(new Date("12-Jan-2010")),
+            "In Progress", "Printing");
+
+    serviceRequest.add(req1);
+    serviceRequest.add(req2);
+
+    if (accountNo == 123456) {
+      response.put("status", HttpStatus.OK);
+      response.put("statusMsg", "Success");
+      response.put("serviceRequest", serviceRequest);
+      return response;
+    }
+    if (accountNo == 654321) {
+      response.put("status", HttpStatus.OK);
+      response.put("statusMsg", "Success");
+      response.put("serviceRequest", serviceRequest);
+      return response;
+    }
+    response.put("status", HttpStatus.NOT_FOUND);
+    response.put("statusMsg", "Failed to get Service requests details for account - " + accountNo);
+    return response;
+  }
 }
