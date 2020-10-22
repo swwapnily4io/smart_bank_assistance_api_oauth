@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class OAuthServerConfiguration extends WebSecurityConfigurerAdapter implements AuthorizationServerConfigurer {
 
   PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  @Value("${login.token.validity.seconds}")
+  int tokenValidity;
 
   @Bean
   public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -39,7 +41,7 @@ public class OAuthServerConfiguration extends WebSecurityConfigurerAdapter imple
     // TODO Auto-generated method stub
     client.inMemory().withClient("web").secret(encoder.encode("webpass")).scopes("READ", "WRITE")
             .authorizedGrantTypes("password", "authorization_code").resourceIds("api").authorities("ADMIN", "USER")
-            .accessTokenValiditySeconds(60);
+            .accessTokenValiditySeconds(tokenValidity);
 
   }
 

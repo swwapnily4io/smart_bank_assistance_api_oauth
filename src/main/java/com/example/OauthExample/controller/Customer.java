@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class Customer {
+  
+  @Value("${login.test.customer.username}")
+  String userName;
+  
+  @Value("${login.test.customer.password}")
+  String userPassword;
 
   @GetMapping("/login")
   @PreAuthorize("!hasAuthority('USER')")
@@ -28,8 +35,8 @@ public class Customer {
           OAuth2Authentication authentication) {
     Map<String, Object> response = new HashMap<String, Object>();
     System.out.println("Printing params " + userName + "password " + userName);
-    if (null != userName && !StringUtils.isEmpty(userName) && userName.equalsIgnoreCase("steve")
-            && password.equalsIgnoreCase("steve123")) {
+    if (null != userName && !StringUtils.isEmpty(userName) && userName.equalsIgnoreCase(userName)
+            && password.equalsIgnoreCase(userPassword)) {
       response.put("status", HttpStatus.OK);
       response.put("loginStatus", "success");
       return response;
