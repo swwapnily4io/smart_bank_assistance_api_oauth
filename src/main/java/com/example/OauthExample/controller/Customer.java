@@ -79,6 +79,8 @@ public class Customer {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Account acc = new Account("Steve Smith", 123456, 1920.10, sdf.format(new Date("12-Jan-2004")), "Savings Account",
             "$");
+    Account ac2 = new Account("Steve Smith", 654321, 10.10, sdf.format(new Date("12/12/2007")), "Current Account",
+            "$");
 
     System.out.println("Printing accountNo " + accountNo);
     TransactionHistory history1 = new TransactionHistory(sdf.format(new Date("12-Jan-2004")), 231332133, "Debit",
@@ -103,7 +105,7 @@ public class Customer {
       response.put("status", HttpStatus.OK);
       response.put("statusMsg", "Success");
       response.put("historyList", history);
-      response.put("account", acc);
+      response.put("account", ac2);
       return response;
     }
     response.put("status", HttpStatus.NOT_FOUND);
